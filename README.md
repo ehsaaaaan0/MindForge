@@ -1,36 +1,90 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🧠 MindForge — Full Stack Agentic App Builder
 
-## Getting Started
+MindForge is a next-generation, full-stack AI-driven application generator. By leveraging state-of-the-art LLMs and agentic workflows, it converts simple natural language descriptions into fully functional, high-fidelity React web applications in real-time.
 
-First, run the development server:
+---
 
+## 🛠️ Technology Stack
+
+MindForge is built with a modern, high-performance, and secure tech stack:
+
+*   **Frontend & Core:** [Next.js 16 (App Router)](https://nextjs.org/) using Turbopack for ultra-fast compilation.
+*   **Agentic Orchestration:** [Cline SDK](https://github.com/cline/sdk) for managing multi-step AI-agent workflows.
+*   **Database & Storage:** [Supabase](https://supabase.com/) (PostgreSQL) for user data and workspaces storage.
+*   **ORM:** [Prisma ORM](https://www.prisma.io/) with optimized pg-pooling for serverless deployments.
+*   **Authentication:** [Clerk Auth](https://clerk.com/) managing user accounts and subscription plans (Free/Pro/Starter).
+*   **Security & Rate Limiting:** [Arcjet](https://arcjet.com/) protecting routes with smart rate limits (token buckets), bot detection, and prompt injection filters.
+*   **Styling & UI:** Tailwind CSS, [Shadcn UI](https://ui.shadcn.com/) components, and [Motion](https://motion.dev/) for smooth micro-animations.
+
+---
+
+## ✨ Features
+
+*   **Instant AI Code Generation:** Describe your application (e.g., "A weather app with animated icons"), and watch MindForge build it file-by-file in real-time.
+*   **Live Preview Sandbox:** Render and interact with the generated React app inside a Sandpack previewer.
+*   **Interactive Chat Workspace:** Command the agent to add features, fix bugs, or patch files.
+*   **Dynamic Billing & Credits:** Clerk-integrated credit system. Users consume credits per code generation, with tiered plans.
+*   **Production-Ready Routing:** Premium dark-themed user layouts with contextual navigation bars.
+
+---
+
+## ⚙️ Getting Started
+
+### 1. Prerequisites
+Ensure you have Node.js installed on your machine.
+
+### 2. Install Dependencies
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 3. Environment Variables Setup
+Create a `.env` file in the root directory and configure the following:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```env
+# Clerk Authentication Keys
+NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=your_clerk_publishable_key
+CLERK_SECRET_KEY=your_clerk_secret_key
+NEXT_PUBLIC_CLERK_SIGN_IN_URL=/sign-in
+NEXT_PUBLIC_CLERK_SIGN_UP_URL=/sign-up
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+# Database Connection (Supabase)
+# Transaction pooler connection string (used by Prisma client at runtime)
+DATABASE_URL="postgresql://...pooler.supabase.com:6543/postgres?pgbouncer=true"
+# Direct connection string (used for schema migrations and CLI commands)
+DIRECT_URL="postgresql://...supabase.com:5432/postgres"
 
-## Learn More
+# Arcjet Key (Shield, Bot & Injection detection)
+ARCJET_KEY=your_arcjet_key
 
-To learn more about Next.js, take a look at the following resources:
+# Gemini API Key (Core LLM Generation Engine)
+GEMINI_API_KEY=your_gemini_api_key
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+# Supabase Storage Details
+NEXT_PUBLIC_SUPABASE_URL=your_supabase_project_url
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### 4. Setup Database Schema
+Generate the local Prisma Client and run migrations:
+```bash
+npx prisma generate
+npx prisma migrate dev --name init
+```
 
-## Deploy on Vercel
+### 5. Run the Application
+Start the development server:
+```bash
+npm run dev
+```
+Open [http://localhost:3000](http://localhost:3000) with your browser to see the app.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+---
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## 🚀 Production Deployment on Vercel
+
+When deploying this project to Vercel, note the following configurations:
+
+1.  **Environment Variables:** Add all environment variables listed in the `.env` section to your **Vercel Settings ➜ Environment Variables**.
+2.  **Next.js 16 Router Proxy:** Global routing guards and authentication checks run on the new Next.js `proxy.ts` middleware standard.
+3.  **Prisma serverless binary:** The client generates statically utilizing native file-tracing so that the Linux query engine binary (`rhel-openssl-3.0.x`) is bundled correctly within Vercel's serverless functions.
