@@ -108,7 +108,7 @@ export default function LandingPage() {
               onBlur={() => setIsFocused(false)}
               placeholder={PLACEHOLDERS[placeholderIndex]}
               rows={1}
-              className="w-full resize-none bg-transparent px-5 pb-4 pt-5 text-sm placeholder:text-white/20 focus:outline-none sm:text-base"
+              className="w-full resize-none bg-transparent px-5 pb-4 pt-5 text-sm text-white placeholder:text-white/20 focus:outline-none sm:text-base"
               style={{ minHeight: 56, maxHeight: 200 }}
             />
 
